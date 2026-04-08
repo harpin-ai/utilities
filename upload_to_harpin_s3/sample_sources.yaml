@@ -1,0 +1,51 @@
+# Sample source mapping for upload_to_harpin_s3_batch.py
+#
+# Each entry maps a filename pattern to a harpin AI source ID.
+# Files are matched against the pattern regex. Anything not matched is ignored.
+#
+# Pattern rules:
+#   - Patterns are standard Python regex
+#   - Two capture groups are required: start date and end date (YYYYMMDD format)
+#   - Files whose date window exceeds max_window_days are skipped
+#
+# To add a new source: add an entry with the correct pattern and source_id.
+# To disable a source: comment it out — do not delete it.
+
+settings:
+  bucket: my-bucket
+  prefix: my-prefix/
+  processed_prefix: my-prefix/processed/
+  failed_prefix: my-prefix/failed/
+  max_window_days: 7
+
+sources:
+
+  # ── Group 1 ───────────────────────────────────────────────────────────────
+  # e.g. FILE_PATTERN_1_20260101_20260107.csv.gz
+  - name: File Pattern 1
+    pattern: ^FILE_PATTERN_1_(\d{8})_(\d{8})\.csv\.gz$
+    source_id: sourceId1
+
+  # e.g. FILE_PATTERN_2_20260101_20260107.csv.gz
+  - name: File Pattern 2
+    pattern: ^FILE_PATTERN_2_(\d{8})_(\d{8})\.csv\.gz$
+    source_id: sourceId2
+
+  # ── Group 2 ───────────────────────────────────────────────────────────────
+  # e.g. FILE_PATTERN_3_20260101_20260107.csv.gz
+  - name: File Pattern 3
+    pattern: ^FILE_PATTERN_3_(\d{8})_(\d{8})\.csv\.gz$
+    source_id: sourceId3
+
+  # e.g. FILE_PATTERN_4_20260101_20260107.csv.gz
+  - name: File Pattern 4
+    pattern: ^FILE_PATTERN_4_(\d{8})_(\d{8})\.csv\.gz$
+    source_id: sourceId4
+
+  # ── Periodic / non-daily ──────────────────────────────────────────────────
+  # Note: Monthly export — window will typically exceed max_window_days and
+  # be skipped by the daily automation. Run manually for periodic catchups.
+  # e.g. FILE_PATTERN_5_20260101_20260201.csv.gz
+  # - name: File Pattern 5
+  #   pattern: ^FILE_PATTERN_5_(\d{8})_(\d{8})\.csv\.gz$
+  #   source_id: sourceId5
