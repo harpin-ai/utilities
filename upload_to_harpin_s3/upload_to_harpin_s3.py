@@ -275,8 +275,8 @@ def validate_s3_file(s3: Any, bucket: str, key: str, s3_uri: str) -> int:
     """
     logger.info("Pre-flight: checking %s...", s3_uri)
 
-    if not key.lower().endswith('.csv'):
-        logger.error("File is not a .csv: %s", s3_uri)
+    if not key.lower().endswith(('.csv', '.csv.gz')):
+        logger.error("File must be a .csv or .csv.gz: %s", s3_uri)
         sys.exit(EXIT_USER_ERROR)
 
     try:
@@ -338,11 +338,12 @@ def stream_s3_to_presigned_url(s3: Any, bucket: str, key: str,
               desc=file_name, disable=not use_tqdm) as pbar:
         wrapped = ProgressStreamWrapper(body, pbar)
         try:
+            content_type = "application/gzip" if key.lower().endswith('.gz') else "text/csv"
             response = requests.put(
                 presigned_url,
                 data=wrapped,
                 headers={
-                    "Content-Type": "text/csv",
+                    "Content-Type": content_type,
                     "Content-Length": str(content_length)
                 },
                 timeout=put_timeout
