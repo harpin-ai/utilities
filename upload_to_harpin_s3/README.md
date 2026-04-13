@@ -174,6 +174,7 @@ Each source entry requires:
 - **`name`** — human-readable label used in logs
 - **`pattern`** — Python regex with exactly two capture groups: start date and end date (`YYYYMMDD`)
 - **`source_id`** — harpin AI `flatFile` source ID
+- **`max_window_days`** *(optional)* — overrides the global `max_window_days` for this source only. Useful for sources with a longer cadence (weekly, monthly) that would otherwise be skipped by the global threshold.
 
 ### Example config
 

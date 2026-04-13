@@ -247,10 +247,11 @@ def survey_bucket(s3: Any, bucket: str, prefix: str,
                 logger.warning("Could not parse dates from filename: %s — skipping", filename)
                 break
 
+            effective_max = source.get('max_window_days', max_window_days)
             window_days = (end_date - start_date).days
-            if window_days > max_window_days:
+            if window_days > effective_max:
                 logger.info("Skipping %s — window %d days exceeds max %d (catchup file)",
-                            filename, window_days, max_window_days)
+                            filename, window_days, effective_max)
                 break
 
             entry = {

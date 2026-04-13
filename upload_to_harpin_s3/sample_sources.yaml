@@ -43,9 +43,11 @@ sources:
     source_id: sourceId4
 
   # ── Periodic / non-daily ──────────────────────────────────────────────────
-  # Note: Monthly export — window will typically exceed max_window_days and
-  # be skipped by the daily automation. Run manually for periodic catchups.
+  # Per-source max_window_days overrides the global setting for this source only.
+  # Useful for sources with a longer cadence (weekly, monthly) that would otherwise
+  # be skipped by the global threshold.
   # e.g. FILE_PATTERN_5_20260101_20260201.csv.gz
-  # - name: File Pattern 5
-  #   pattern: ^FILE_PATTERN_5_(\d{8})_(\d{8})\.csv\.gz$
-  #   source_id: sourceId5
+  - name: File Pattern 5
+    pattern: ^FILE_PATTERN_5_(\d{8})_(\d{8})\.csv\.gz$
+    source_id: sourceId5
+    max_window_days: 35
